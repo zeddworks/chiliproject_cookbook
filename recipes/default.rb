@@ -101,7 +101,7 @@ deploy_revision "#{chiliproject_path}" do
   user "nginx"
   enable_submodules true
   before_migrate do
-    execute "bundle install" do
+    execute "bundle install --without=sqlite3 postgres rmagick" do
       cwd release_path
     end
     execute "rake generate_session_store" do
