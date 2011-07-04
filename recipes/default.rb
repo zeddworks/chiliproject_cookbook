@@ -24,13 +24,14 @@ chiliproject_url = chiliproject["chiliproject_url"]
 chiliproject_path = "/srv/rails/#{chiliproject_url}"
 
 package "memcached"
+#package "imagemagick"
 package "libmagickwand-dev"
 gem_package "taps"
 gem_package "bundler"
 
 #gem_package "postgres-pr"
 #gem_package "rails" do
-#  version "2.3.11"
+#  version "2.3.12"
 #end
 #gem_package "i18n" do
 #  version "0.4.2"
@@ -101,7 +102,13 @@ deploy_revision "#{chiliproject_path}" do
   user "nginx"
   enable_submodules true
   before_migrate do
-    execute "bundle install --without=sqlite3 postgres rmagick" do
+    cookbook_file "#{release_path}/Gemfile" do
+      source "Gemfile"
+      owner "nginx"
+      group "nginx"
+      mode "0400"
+    end
+    execute "bundle install --without=sqlite mysql mysql2" do
       cwd release_path
     end
     execute "rake generate_session_store" do
@@ -118,14 +125,14 @@ deploy_revision "#{chiliproject_path}" do
                           "config/environments/production.rb" => "config/environments/production.rb"
                          })
   before_symlink do
-    execute "rake chiliproject:load_default_data" do
+    execute "rake redmine:load_default_data" do
       user 'nginx'
       group 'nginx'
       cwd release_path
-      environment "RAILS_ENV" => "production", "chiliproject_LANG" => "en"
+      environment "RAILS_ENV" => "production", "REDMINE_LANG" => "en"
     end
   end
   environment "RAILS_ENV" => "production"
-  action :deploy # or :rollback
+  action :force_deploy # or :rollback
   restart_command "touch tmp/restart.txt"
 end
