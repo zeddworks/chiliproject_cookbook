@@ -18,7 +18,8 @@ group :openid do
 end
 
 group :rmagick do
-  gem "rmagick", "~> 1.15.17"
+  #  gem "rmagick", "~> 1.15.17"
+  gem "rmagick", '~> 2.13.1'
 end
 
 # Use the commented pure ruby gems, if you have not the needed prerequisites on
@@ -38,8 +39,8 @@ platforms :mri do
   end
   
   group :postgres do
-    #  gem "pg", "~> 0.9.0"
-    gem "postgres-pr"
+    gem "pg", "~> 0.11.0"
+    #  gem "postgres-pr"
   end
   
   group :sqlite do

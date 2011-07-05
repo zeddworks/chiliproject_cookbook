@@ -24,19 +24,8 @@ chiliproject_url = chiliproject["chiliproject_url"]
 chiliproject_path = "/srv/rails/#{chiliproject_url}"
 
 package "memcached"
-#package "imagemagick"
 package "libmagickwand-dev"
-gem_package "taps"
 gem_package "bundler"
-
-#gem_package "postgres-pr"
-#gem_package "rails" do
-#  version "2.3.12"
-#end
-#gem_package "i18n" do
-#  version "0.4.2"
-#end
-#gem_package "rmagick"
 
 passenger_nginx_vhost chiliproject_url
 
@@ -108,24 +97,31 @@ deploy_revision "#{chiliproject_path}" do
       group "nginx"
       mode "0400"
     end
-    execute "bundle install --without=sqlite mysql mysql2" do
+    execute "bundle install --path vendor --without=sqlite mysql mysql2" do
+      user "nginx"
+      group "nginx"
       cwd release_path
     end
-    execute "rake generate_session_store" do
+    execute "bundle package" do
+      user "nginx"
+      group "nginx"
+      cwd release_path
+    end
+    execute "bundle exec rake generate_session_store" do
       user 'nginx'
       group 'nginx'
       cwd release_path
     end
   end
   migrate true
-  migration_command "rake db:migrate"
+  migration_command "bundle exec rake db:migrate"
   symlink_before_migrate ({
                           "config/database.yml" => "config/database.yml",
                           "config/configuration.yml" => "config/configuration.yml",
                           "config/environments/production.rb" => "config/environments/production.rb"
                          })
   before_symlink do
-    execute "rake redmine:load_default_data" do
+    execute "bundle exec rake redmine:load_default_data" do
       user 'nginx'
       group 'nginx'
       cwd release_path
