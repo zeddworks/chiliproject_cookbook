@@ -97,7 +97,13 @@ deploy_revision "#{chiliproject_path}" do
       group "nginx"
       mode "0400"
     end
-    execute "bundle install --path vendor/bundle --without=sqlite mysql mysql2" do
+    cookbook_file "#{release_path}/Gemfile.lock" do
+      source "Gemfile.lock"
+      owner "nginx"
+      group "nginx"
+      mode "0400"
+    end
+    execute "bundle install --deployment --without=sqlite mysql mysql2" do
       user "nginx"
       group "nginx"
       cwd release_path

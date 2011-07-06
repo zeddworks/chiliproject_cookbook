@@ -1,0 +1,60 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    aasm (2.2.0)
+    actionmailer (2.3.12)
+      actionpack (= 2.3.12)
+    actionpack (2.3.12)
+      activesupport (= 2.3.12)
+      rack (~> 1.1.0)
+    activerecord (2.3.12)
+      activesupport (= 2.3.12)
+    activeresource (2.3.12)
+      activesupport (= 2.3.12)
+    activesupport (2.3.12)
+    coderay (0.9.8)
+    edavis10-object_daddy (0.4.3)
+    i18n (0.4.2)
+    mocha (0.9.12)
+    mysql (2.8.1)
+    mysql2 (0.2.11)
+    pg (0.11.0)
+    rack (1.1.2)
+    rails (2.3.12)
+      actionmailer (= 2.3.12)
+      actionpack (= 2.3.12)
+      activerecord (= 2.3.12)
+      activeresource (= 2.3.12)
+      activesupport (= 2.3.12)
+      rake (>= 0.8.3)
+    rake (0.9.2)
+    rdoc (3.8)
+    rmagick (2.13.1)
+    ruby-openid (2.1.8)
+    rubytree (0.5.3)
+    shoulda (2.10.3)
+    sqlite3-ruby (1.2.5)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  aasm
+  activerecord-jdbcmysql-adapter
+  activerecord-jdbcpostgresql-adapter
+  activerecord-jdbcsqlite3-adapter
+  coderay (~> 0.9.7)
+  edavis10-object_daddy
+  i18n (~> 0.4.2)
+  jruby-openssl
+  mocha
+  mysql
+  mysql2 (~> 0.2.7)
+  pg (~> 0.11.0)
+  rails (= 2.3.12)
+  rdoc (>= 2.4.2)
+  rmagick (~> 2.13.1)
+  ruby-openid (~> 2.1.4)
+  rubytree (~> 0.5.2)
+  shoulda (~> 2.10.3)
+  sqlite3-ruby (< 1.3)
