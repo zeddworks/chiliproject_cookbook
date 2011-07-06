@@ -97,7 +97,7 @@ deploy_revision "#{chiliproject_path}" do
       group "nginx"
       mode "0400"
     end
-    execute "bundle install --path vendor --without=sqlite mysql mysql2" do
+    execute "bundle install --path vendor/bundle --without=sqlite mysql mysql2" do
       user "nginx"
       group "nginx"
       cwd release_path
