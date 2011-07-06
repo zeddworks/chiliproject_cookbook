@@ -129,6 +129,6 @@ deploy_revision "#{chiliproject_path}" do
     end
   end
   environment "RAILS_ENV" => "production"
-  action :force_deploy # or :rollback
+  action :deploy # or :rollback
   restart_command "touch tmp/restart.txt"
 end
