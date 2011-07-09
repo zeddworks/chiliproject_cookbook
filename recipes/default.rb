@@ -20,14 +20,14 @@
 chiliproject = Chef::EncryptedDataBagItem.load("apps", "chiliproject")
 smtp = Chef::EncryptedDataBagItem.load("apps", "smtp")
 
-chiliproject_url = chiliproject["chiliproject_url"]
-chiliproject_path = "/srv/rails/#{chiliproject_url}"
+url = chiliproject["url"]
+path = "/srv/rails/#{url}"
 
 package "memcached"
 package "libmagickwand-dev"
 gem_package "bundler"
 
-passenger_nginx_vhost chiliproject_url
+passenger_nginx_vhost url
 
 postgresql_user "chiliproject" do
   password "chiliproject"
@@ -38,9 +38,9 @@ postgresql_db "chiliproject_production" do
 end
 
 directories = [
-                "#{chiliproject_path}/shared/config","#{chiliproject_path}/shared/log",
-                "#{chiliproject_path}/shared/system","#{chiliproject_path}/shared/pids",
-                "#{chiliproject_path}/shared/config/environments","/var/chiliproject/files"
+                "#{path}/shared/config","#{path}/shared/log",
+                "#{path}/shared/system","#{path}/shared/pids",
+                "#{path}/shared/config/environments","/var/chiliproject/files"
               ]
 directories.each do |dir|
   directory dir do
@@ -51,14 +51,14 @@ directories.each do |dir|
   end
 end
 
-cookbook_file "#{chiliproject_path}/shared/config/environments/production.rb" do
+cookbook_file "#{path}/shared/config/environments/production.rb" do
   source "production.rb"
   owner "nginx"
   group "nginx"
   mode "0400"
 end
 
-template "#{chiliproject_path}/shared/config/database.yml" do
+template "#{path}/shared/config/database.yml" do
   source "database.yml.erb"
   owner "nginx"
   group "nginx"
@@ -72,7 +72,7 @@ template "#{chiliproject_path}/shared/config/database.yml" do
   })
 end
 
-template "#{chiliproject_path}/shared/config/configuration.yml" do
+template "#{path}/shared/config/configuration.yml" do
   source "configuration.yml.erb"
   owner "nginx"
   group "nginx"
@@ -85,7 +85,7 @@ template "#{chiliproject_path}/shared/config/configuration.yml" do
   })
 end
 
-deploy_revision "#{chiliproject_path}" do
+deploy_revision "#{path}" do
   repo "git://github.com/chiliproject/chiliproject.git"
   revision "v2.0.0" # or "HEAD" or "TAG_for_1.0" or (subversion) "1234"
   user "nginx"
